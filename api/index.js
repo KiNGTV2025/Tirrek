@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   try {
     const now = Date.now();
     if (!cachedM3U || now - lastFetched > CACHE_DURATION) {
-      const response = await fetch("https://raw.githubusercontent.com/KiNGTV2025/Kingvercel/main/M3U/Kablonet.m3u");
+      const response = await fetch("https://raw.githubusercontent.com/KiNGTV2025/Tirrek/main/1UmitTV.m3u");
       const text = await response.text();
       cachedM3U = text.split("\n").map(line => line.trim());
       lastFetched = now;
