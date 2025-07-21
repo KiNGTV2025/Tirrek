@@ -1,7 +1,7 @@
 import json
 import os
 
-def handler(request):
+def handler(event, context):
     try:
         file_path = os.path.join(os.path.dirname(__file__), "links.json")
         with open(file_path, "r", encoding="utf-8") as f:
@@ -17,5 +17,3 @@ def handler(request):
             "statusCode": 500,
             "body": json.dumps({"error": f"Hata: {str(e)}"})
         }
-
-handler.__name__ = "handler"
