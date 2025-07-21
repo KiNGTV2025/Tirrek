@@ -1,31 +1,34 @@
 import json
 
 def handler(request):
-    params = request.get("query", {})
-    kanal_adi = params.get("id")
+    query = request.get("query", {})
+    kanal_adi = query.get("id")
 
     if not kanal_adi:
         return {
             "statusCode": 400,
-            "body": "Kanal ID gerekli. Örnek: ?id=trt1"
+            "body": json.dumps({"error": "Kanal ID gerekli. Örnek: ?id=trt1"}),
+            "headers": {"Content-Type": "application/json"}
         }
 
     try:
         with open("api/links.json", "r", encoding="utf-8") as f:
             data = json.load(f)
-    except FileNotFoundError:
+    except Exception:
         return {
             "statusCode": 500,
-            "body": "links.json bulunamadı."
+            "body": json.dumps({"error": "links.json bulunamadı."}),
+            "headers": {"Content-Type": "application/json"}
         }
 
     if kanal_adi not in data:
         return {
             "statusCode": 404,
-            "body": f"{kanal_adi} için link bulunamadı."
+            "body": json.dumps({"error": f"{kanal_adi} için link bulunamadı."}),
+            "headers": {"Content-Type": "application/json"}
         }
 
-    # Doğrudan yönlendirme (redirect)
+    # Redirect yapıyoruz
     return {
         "statusCode": 302,
         "headers": {
