@@ -1,9 +1,21 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/id=:id", "destination": "/api/stream.py?id=:id" }
-  ],
   "functions": {
-    "api/stream.py": { "runtime": "vercel-python@0.0.5" }
-  }
+    "api/stream.py": {
+      "runtime": "vercel-python@0.0.5"
+    },
+    "api/list.py": {
+      "runtime": "vercel-python@0.0.5"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/id=:id",
+      "destination": "/api/stream.py?id=:id"
+    },
+    {
+      "source": "/idliste",
+      "destination": "/api/list.py"
+    }
+  ]
 }
