@@ -22,15 +22,42 @@ export default async function handler(req, res) {
 
     const lines = cachedM3U;
     const kanalListesi = [];
+    let currentHeaders = {
+      'User-Agent': 'Mozilla/5.0',
+      'Referer': 'https://www.selcuksportshd1829.xyz/'
+    };
 
     for (let i = 0; i < lines.length; i++) {
-      const match = lines[i].match(/tvg-id="([^"]+)"[^,]*,(.*)/);
+      const line = lines[i];
+      
+      // Kanal bilgilerini işle
+      const match = line.match(/tvg-id="([^"]+)"[^,]*,(.*)/);
       if (match) {
         kanalListesi.push({ id: match[1], name: match[2] });
       }
+      
+      // Header bilgilerini işle
+      if (line.startsWith('#EXTVLCOPT:http-user-agent=')) {
+        currentHeaders['User-Agent'] = line.split('=')[1];
+      }
+      else if (line.startsWith('#EXTVLCOPT:http-referer=')) {
+        currentHeaders['Referer'] = line.split('=')[1];
+      }
+      
+      // ID eşleşmesi ve yayın URL'si
+      if (id && line.includes(`tvg-id="${id}"`)) {
+        const streamUrl = lines[i + 1]?.trim();
+        if (streamUrl && !streamUrl.startsWith('#')) {
+          // Yayın URL'sini doğrudan yönlendirme yerine header'ları ekleyerek dön
+          return res.status(200).json({
+            url: streamUrl,
+            headers: currentHeaders
+          });
+        }
+      }
     }
 
-    const matchingIndex = lines.findIndex(line => line.includes(`tvg-id="${id}"`));
+    // ID belirtilmemiş veya bulunamamışsa
     if (!id || matchingIndex === -1) {
       const html = `
         <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,9 +70,7 @@ export default async function handler(req, res) {
       return res.status(200).send(html);
     }
 
-    const streamUrl = lines[matchingIndex + 1]?.trim();
-    if (streamUrl) return res.redirect(streamUrl);
-    else return res.status(404).send("Yayın linki bulunamadı.");
+    return res.status(404).send("Yayın linki bulunamadı.");
   } catch (error) {
     return res.status(500).send(`<h1>Sunucu hatası</h1><p>${error.message}</p>`);
   }
