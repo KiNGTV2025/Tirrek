@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         const name = match[2];
 
         output += `#EXTINF:-1 tvg-id="${id}",${name}\n`;
-        output += `https://umit-tv.vercel.app/api/index?id=${id}\n`;
+        output += `https://umittvspor.vercel.app/api/index?id=${id}\n`;
       }
     }
 
