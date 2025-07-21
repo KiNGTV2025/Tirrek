@@ -1,4 +1,5 @@
 import json
+import os
 
 def handler(request):
     query = request.get("query", {})
@@ -12,12 +13,15 @@ def handler(request):
         }
 
     try:
-        with open("api/links.json", "r", encoding="utf-8") as f:
+        # Absolute path kullanarak json dosyasını oku
+        base_path = os.path.dirname(__file__)
+        json_path = os.path.join(base_path, "links.json")
+        with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-    except Exception:
+    except Exception as e:
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": "links.json bulunamadı."}),
+            "body": json.dumps({"error": f"links.json okunamadı: {str(e)}"}),
             "headers": {"Content-Type": "application/json"}
         }
 
@@ -28,7 +32,6 @@ def handler(request):
             "headers": {"Content-Type": "application/json"}
         }
 
-    # Redirect yapıyoruz
     return {
         "statusCode": 302,
         "headers": {
