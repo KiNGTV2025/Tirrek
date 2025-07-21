@@ -6,16 +6,21 @@ import json
 class SelcuksportsManager:
     def __init__(self):
         self.httpx = Client(timeout=10, verify=False)
-        self.channel_ids = [
-            "selcukbeinsports1", "selcukbeinsports2", "selcukbeinsports3",
-            "selcukbeinsports4", "selcukbeinsports5", "selcukbeinsportsmax1",
-            "selcukbeinsportsmax2", "selcukssport", "selcukssport2",
-            "selcuksmartspor", "selcuksmartspor2", "selcuktivibuspor1",
-            "selcuktivibuspor2", "selcuktivibuspor3", "selcuktivibuspor4",
-            "selcukbeinsportshaber", "selcukaspor", "selcukeurosport1",
-            "selcukeurosport2", "selcuksf1", "selcuktabiispor", "ssportplus1"
-        ]
-        self.output_file = "1UmitTV.m3u"
+        self.kanallar = {
+            "trt1": "selcukbeinsports1",
+            "trt2": "selcukbeinsports2",
+            "beinmax1": "selcukbeinsportsmax1",
+            "beinmax2": "selcukbeinsportsmax2",
+            "smartspor": "selcuksmartspor",
+            "smartspor2": "selcuksmartspor2",
+            "ssport": "selcukssport",
+            "ssport2": "selcukssport2",
+            "eurosport1": "selcukeurosport1",
+            "eurosport2": "selcukeurosport2",
+            "sf1": "selcuksf1",
+            "tabiispor": "selcuktabiispor",
+            "aspor": "selcukaspor"
+        }
         self.links_json_file = "api/links.json"
 
     def find_working_domain(self):
@@ -37,25 +42,18 @@ class SelcuksportsManager:
         match = re.search(r'this\.baseStreamUrl\s*=\s*[\'"]([^\'"]+)', html)
         return match.group(1) if match else None
 
-    def build_m3u8_and_json(self, base_url, referer_url):
-        m3u = ["#EXTM3U"]
+    def generate_links_json(self, base_url, referer_url):
         links = {}
-        for cid in self.channel_ids:
+        for name, cid in self.kanallar.items():
             full_url = f"{base_url}{cid}/playlist.m3u8"
-            name = cid.replace("selcuk", "").capitalize()
+            links[name] = {
+                "url": full_url,
+                "ref": referer_url,
+                "user_agent": "Mozilla/5.0"
+            }
 
-            m3u.append(f'#EXTINF:-1 group-title="Selcuksports",{name}')
-            m3u.append('#EXTVLCOPT:http-user-agent=Mozilla/5.0')
-            m3u.append(f'#EXTVLCOPT:http-referrer={referer_url}')
-            m3u.append(full_url)
+        os.makedirs(os.path.dirname(self.links_json_file), exist_ok=True)
 
-            links[cid] = full_url
-
-        # M3U dosyasını yaz
-        with open(self.output_file, "w", encoding="utf-8") as f:
-            f.write("\n".join(m3u))
-
-        # JSON dosyasını yaz
         with open(self.links_json_file, "w", encoding="utf-8") as f:
             json.dump(links, f, indent=2)
 
@@ -70,18 +68,18 @@ class SelcuksportsManager:
             print("❌ Player domain bulunamadı")
             return
 
-        response = self.httpx.get(f"{stream_domain}/index.php?id={self.channel_ids[0]}", headers={
+        response = self.httpx.get(f"{stream_domain}/index.php?id={list(self.kanallar.values())[0]}", headers={
             "User-Agent": "Mozilla/5.0",
             "Referer": referer
         })
 
         base_url = self.extract_base_stream_url(response.text)
         if not base_url:
-            print("❌ Base stream URL bulunamadı")
+            print("❌ baseStreamUrl bulunamadı")
             return
 
-        self.build_m3u8_and_json(base_url, referer)
-        print("✅ Başarıyla güncellendi!")
+        self.generate_links_json(base_url, referer)
+        print("✅ JSON başarıyla güncellendi!")
 
 if __name__ == "__main__":
     SelcuksportsManager().calistir()
