@@ -1,9 +1,9 @@
 import json
 import os
 
-def handler(request):
+def handler(event, context):
     try:
-        params = request.get("query", {})
+        params = event.get("queryStringParameters") or {}
         kanal_adi = params.get("id")
 
         if not kanal_adi:
@@ -22,7 +22,6 @@ def handler(request):
                 "body": json.dumps({"error": f"{kanal_adi} için link bulunamadı."})
             }
 
-        # Link yönlendirme
         return {
             "statusCode": 302,
             "headers": {
@@ -36,5 +35,3 @@ def handler(request):
             "statusCode": 500,
             "body": json.dumps({"error": f"Sunucu hatası: {str(e)}"})
         }
-
-handler.__name__ = "handler"
