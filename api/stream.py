@@ -2,39 +2,20 @@ import json
 import os
 
 def handler(request):
+    # Query parametreden id al
+    kanal = request.args.get("id") if hasattr(request, "args") else request.get("query", {}).get("id")
+    if not kanal:
+        return {"statusCode": 400, "body": "id parametresi gerekli"}
+
     try:
-        base_path = os.path.dirname(__file__)
-        json_path = os.path.join(base_path, "links.json")
-        with open(json_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        base = os.path.dirname(__file__)
+        data = json.load(open(os.path.join(base, "links.json"), "r", encoding="utf-8"))
     except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": f"Dosya okunamadı: {str(e)}"}),
-            "headers": {"Content-Type": "application/json"}
-        }
+        return {"statusCode": 500, "body": f"links.json okunamadı: {e}"}
 
-    query = request.get("query", {})
-    kanal_adi = query.get("id")
-    if not kanal_adi:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "Kanal ID gerekli. Örnek: ?id=trt1"}),
-            "headers": {"Content-Type": "application/json"}
-        }
+    if kanal not in data:
+        return {"statusCode": 404, "body": "Kanal bulunamadı"}
 
-    if kanal_adi not in data:
-        return {
-            "statusCode": 404,
-            "body": json.dumps({"error": f"{kanal_adi} için link bulunamadı."}),
-            "headers": {"Content-Type": "application/json"}
-        }
-
-    # Redirect yapalım:
-    return {
-        "statusCode": 302,
-        "headers": {"Location": data[kanal_adi]["url"]},
-        "body": ""
-    }
+    return {"statusCode": 302, "headers": {"Location": data[kanal]["url"]}, "body": ""}
 
 handler.__name__ = "handler"
