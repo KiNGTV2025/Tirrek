@@ -1,19 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/stream.py",
-      "use": "@vercel/python"
-    }
-  ],
   "routes": [
     {
-      "src": "/api/umittv.m3u",
-      "dest": "/api/stream.py"
-    },
-    {
-      "src": "/api/stream",
-      "dest": "/api/stream.py"
+      "src": "/index.m3u8",
+      "dest": "api/index.js"
     }
   ]
 }
