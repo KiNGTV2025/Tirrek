@@ -1,21 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/stream.py": {
-      "runtime": "vercel-python@0.0.5"
-    },
-    "api/list.py": {
-      "runtime": "vercel-python@0.0.5"
+  "builds": [
+    {
+      "src": "api/stream.py",
+      "use": "@vercel/python"
     }
-  },
-  "rewrites": [
+  ],
+  "routes": [
     {
-      "source": "/id=:id",
-      "destination": "/api/stream.py?id=:id"
+      "src": "/api/umittv.m3u",
+      "dest": "/api/stream.py"
     },
     {
-      "source": "/idliste",
-      "destination": "/api/list.py"
+      "src": "/api/stream",
+      "dest": "/api/stream.py"
     }
   ]
 }
