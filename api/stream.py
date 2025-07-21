@@ -7,7 +7,7 @@ def handler(request):
     if not kanal_adi:
         return {
             "statusCode": 400,
-            "body": json.dumps({"error": "Kanal ID gerekli. Örnek: ?id=trt1"})
+            "body": "Kanal ID gerekli. Örnek: ?id=trt1"
         }
 
     try:
@@ -16,20 +16,22 @@ def handler(request):
     except FileNotFoundError:
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": "links.json bulunamadı."})
+            "body": "links.json bulunamadı."
         }
 
     if kanal_adi not in data:
         return {
             "statusCode": 404,
-            "body": json.dumps({"error": f"{kanal_adi} için link bulunamadı."})
+            "body": f"{kanal_adi} için link bulunamadı."
         }
 
+    # Doğrudan yönlendirme (redirect)
     return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(data[kanal_adi])
+        "statusCode": 302,
+        "headers": {
+            "Location": data[kanal_adi]["url"]
+        },
+        "body": ""
     }
 
-# Vercel uyumluluğu
 handler.__name__ = "handler"
