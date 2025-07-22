@@ -1,16 +1,23 @@
-import links from '../../links.json';
+import fs from 'fs';
+import path from 'path';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { channel } = req.query;
 
-  if (!channel || !links[channel]) {
-    res.status(404).json({ error: "Kanal bulunamadı" });
-    return;
+  try {
+    const filePath = path.join(process.cwd(), 'api', 'links.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const links = JSON.parse(fileContents);
+
+    const data = links[channel];
+    if (!data?.url) {
+      return res.status(404).json({ error: "Kanal bulunamadı" });
+    }
+
+    const stream = `${data.url}|referer=${data.ref}&|user-agent=${data.user_agent}`;
+    return res.status(200).json({ stream });
+
+  } catch (err) {
+    return res.status(500).json({ error: "Sunucu hatası", details: err.message });
   }
-
-  const { url, ref, user_agent } = links[channel];
-
-  const stream = `${url}|referer=${ref}&|user-agent=${user_agent}`;
-
-  res.status(200).json({ stream });
 }
