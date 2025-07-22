@@ -1,30 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/*.js",
-      "use": "@vercel/node",
-      "config": {
-        "nodeVersion": "22.x"
-      }
-    }
+    { "src": "api/[channel].js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/index.m3u",
-      "dest": "/api/m3u.js"
-    },
-    {
-      "src": "/stream",
-      "dest": "/api/stream.js"
-    },
-    {
-      "src": "/channels",
-      "dest": "/api/index.js"
-    }
+    { "src": "/(.*)", "dest": "/api/[channel].js" }
   ]
 }
