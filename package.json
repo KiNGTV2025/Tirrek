@@ -1,13 +1,14 @@
 {
-  "name": "umittvspor",
+  "name": "tirrek",
   "version": "1.0.0",
-  "main": "api/[channel].js",
-  "scripts": {
-    "start": "node api/[channel].js"
-  },
-  "license": "MIT",
-  "type": "module",
   "engines": {
     "node": "22.x"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    // projenin ihtiyaç duyduğu paketler
   }
 }
