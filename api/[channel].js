@@ -1,13 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { channel } = req.query;
 
   try {
-    const filePath = path.join(process.cwd(), 'api', 'links.json');
-    const fileData = fs.readFileSync(filePath, 'utf-8');
-    const links = JSON.parse(fileData);
+    const response = await fetch(`${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : "http://localhost:3000"}/links.json`);
+    const links = await response.json();
 
     const data = links[channel];
     if (!data || !data.url) {
