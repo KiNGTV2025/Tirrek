@@ -8,9 +8,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+  if (req.method === "OPTIONS") return res.status(200).end();
 
   const { id } = req.query;
 
@@ -18,13 +16,8 @@ export default async function handler(req, res) {
     // Cache kontrolü
     const now = Date.now();
     if (!cachedM3U || now - lastFetchTime > CACHE_DURATION) {
-      console.log("Cache yenileniyor...");
       const response = await fetch("https://raw.githubusercontent.com/KiNGTV2025/Tirrek/main/1UmitTV.m3u");
-      
-      if (!response.ok) {
-        throw new Error(`GitHub'dan M3U alınamadı: ${response.status}`);
-      }
-      
+      if (!response.ok) throw new Error(`GitHub'dan M3U alınamadı: ${response.status}`);
       cachedM3U = await response.text();
       lastFetchTime = now;
     }
@@ -50,19 +43,21 @@ export default async function handler(req, res) {
       
       // Kanal bilgisi satırı
       if (line.startsWith('#EXTINF:-1')) {
-        const channelNameMatch = line.match(/group-title="[^"]*",([^,]+)/) || 
-                               line.match(/tvg-name="([^"]+)"/) || 
-                               line.match(/,(.+)$/);
-        
+        const channelNameMatch = line.match(/group-title="[^"]*",([^,]+)/);
         if (channelNameMatch) {
           const channelName = channelNameMatch[1].trim();
-          const channelId = channelName.toLowerCase().replace(/\s+/g, '');
+          // Özel ID eşleme mantığı
+          let channelId = channelName.toLowerCase()
+            .replace(/\s+/g, '')
+            .replace('beinsports', 'bein')
+            .replace('beinsport', 'bein');
           
-          // Tüm kanalları listeye ekle
+          // Tüm kanalları listeye ekle (orijinal isimle)
           allChannels.push({ id: channelId, name: channelName });
           
           // Eğer ID parametresi varsa ve eşleşiyorsa
-          if (id && channelId === id.toLowerCase()) {
+          if (id && (channelId === id.toLowerCase() || 
+                     channelName.toLowerCase().includes(id.toLowerCase()))) {
             // Sonraki satırın URL olup olmadığını kontrol et
             if (i + 1 < lines.length) {
               const nextLine = lines[i + 1].trim();
@@ -81,41 +76,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // ID belirtilmemişse tüm kanalları listele
-    if (!id) {
-      const htmlResponse = `
-        <html>
-          <head>
-            <title>Mevcut Kanallar</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <style>
-              body { font-family: Arial, sans-serif; margin: 20px; }
-              table { border-collapse: collapse; width: 100%; }
-              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-              th { background-color: #f2f2f2; }
-              a { color: #0066cc; text-decoration: none; }
-              a:hover { text-decoration: underline; }
-            </style>
-          </head>
-          <body>
-            <h1>Mevcut Kanallar</h1>
-            <table>
-              <tr><th>ID</th><th>Kanal Adı</th><th>Link</th></tr>
-              ${allChannels.map(ch => `
-                <tr>
-                  <td>${ch.id}</td>
-                  <td>${ch.name}</td>
-                  <td><a href="/api/index?id=${ch.id}">API Linki</a></td>
-                </tr>
-              `).join('')}
-            </table>
-          </body>
-        </html>
-      `;
-      res.setHeader('Content-Type', 'text/html');
-      return res.status(200).send(htmlResponse);
-    }
-
     // Kanal bulunduysa
     if (foundChannel) {
       return res.status(200).json(foundChannel);
@@ -125,17 +85,20 @@ export default async function handler(req, res) {
     return res.status(404).json({
       error: "Kanal bulunamadı",
       available_channels: allChannels.map(c => c.id),
-      suggestion: id.includes('bein') ? 
+      suggestion: id.toLowerCase().includes('bein') ? 
         'beinmax1, beinmax2, beinsports1 deneyin' : 
-        'Geçerli kanal IDleri için /api/index adresini ziyaret edin'
+        'Geçerli kanal IDleri için /api/index adresini ziyaret edin',
+      debug_info: {
+        searched_id: id,
+        normalized_id: id?.toLowerCase().replace(/\s+/g, '')
+      }
     });
 
   } catch (err) {
     console.error("Hata oluştu:", err);
     return res.status(500).json({
       error: "Sunucu hatası",
-      details: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+      details: err.message
     });
   }
 }
