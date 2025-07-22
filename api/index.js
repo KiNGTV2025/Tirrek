@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 let cache = {
   data: null,
@@ -6,7 +6,7 @@ let cache = {
 };
 const CACHE_DURATION = 300000; // 5 dakika
 
-async function parseM3U(content) {
+function parseM3U(content) {
   const lines = content.split('\n');
   const channels = [];
   let current = {};
@@ -45,7 +45,7 @@ async function parseM3U(content) {
   return { channels };
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS ayarları
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
       
       const text = await response.text();
       cache = {
-        data: await parseM3U(text),
+        data: parseM3U(text),
         timestamp: now
       };
     }
@@ -107,4 +107,4 @@ module.exports = async (req, res) => {
       details: error.message
     });
   }
-};
+}
