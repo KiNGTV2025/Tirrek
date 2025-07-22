@@ -1,21 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 module.exports = async (req, res) => {
   const { channel } = req.query;
 
-  const filePath = path.join(__dirname, 'links.json');
+  // DEBUG: Kanal ismini logla
+  console.log("GELEN KANAL:", channel);
 
+  const filePath = path.join(__dirname, "links.json");
+
+  // Dosya var mı kontrol et
   if (!fs.existsSync(filePath)) {
     return res.status(500).json({ error: "links.json bulunamadı" });
   }
 
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const links = JSON.parse(data);
+  // JSON oku
+  const data = fs.readFileSync(filePath, "utf-8");
 
-  if (!links[channel]) {
-    return res.status(404).json({ error: "Kanal bulunamadı" });
+  let links;
+  try {
+    links = JSON.parse(data);
+  } catch (err) {
+    return res.status(500).json({ error: "links.json bozuk", detay: err.message });
   }
 
-  return res.status(200).json(links[channel]);
+  // Kanal mevcut mi?
+  if (!links[channel]) {
+    return res.status(404).json({ error: "Kanal bulunamadı", kanal: channel });
+  }
+
+  // Kanal bilgilerini döndür
+  res.status(200).json(links[channel]);
 };
