@@ -1,31 +1,42 @@
-const fs = require("fs");
-const path = require("path");
+import fetch from "node-fetch";
 
-module.exports = async (req, res) => {
+const channels = {
+  "trt1": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports1/playlist.m3u8",
+  "trt2": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports2/playlist.m3u8",
+  "beinmax1": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsportsmax1/playlist.m3u8",
+  // ... diğer kanallar
+};
+
+export default async function handler(req, res) {
   const { channel } = req.query;
 
-  // JSON dosyasının yolu
-  const filePath = path.join(__dirname, "links.json");
-
-  // Dosya var mı kontrol et
-  if (!fs.existsSync(filePath)) {
-    return res.status(500).json({ error: "links.json bulunamadı" });
+  if (!channel || !channels[channel]) {
+    res.status(404).json({ error: "Kanal bulunamadı" });
+    return;
   }
 
-  // JSON'u oku
-  let links;
+  const streamUrl = channels[channel];
+
   try {
-    const raw = fs.readFileSync(filePath, "utf-8");
-    links = JSON.parse(raw);
-  } catch (err) {
-    return res.status(500).json({ error: "links.json okunamadı", detay: err.message });
-  }
+    const response = await fetch(streamUrl, {
+      headers: {
+        "Referer": "https://www.selcuksportshd1829.xyz/",
+        "User-Agent": "Mozilla/5.0"
+      }
+    });
 
-  // Kanal var mı kontrol et
-  if (!links[channel]) {
-    return res.status(404).json({ error: "Kanal bulunamadı", kanal: channel });
-  }
+    if (!response.ok) {
+      res.status(response.status).json({ error: `Stream erişim hatası: ${response.status}` });
+      return;
+    }
 
-  // Kanal linkini döndür
-  return res.status(200).json(links[channel]);
-};
+    const contentType = response.headers.get("content-type") || "application/vnd.apple.mpegurl";
+    res.setHeader("Content-Type", contentType);
+
+    const body = await response.text();
+    res.status(200).send(body);
+
+  } catch (error) {
+    res.status(500).json({ error: "Sunucu hatası", details: error.message });
+  }
+}
