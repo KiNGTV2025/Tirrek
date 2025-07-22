@@ -5,8 +5,7 @@
       "src": "api/*.js",
       "use": "@vercel/node",
       "config": {
-        "nodeVersion": "22.x",
-        "includeFiles": ["api/**"]
+        "nodeVersion": "22.x"
       }
     }
   ],
@@ -21,6 +20,10 @@
     },
     {
       "src": "/stream",
+      "dest": "/api/stream.js"
+    },
+    {
+      "src": "/channels",
       "dest": "/api/index.js"
     }
   ]
