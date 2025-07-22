@@ -1,19 +1,31 @@
+import fs from 'fs';
 import path from 'path';
-import fs from 'fs/promises';
 
 export default async function handler(req, res) {
-  const { channel } = req.query;
+  let { channel } = req.query;
+
+  // ".m3u8" varsa temizle
+  if (channel.endsWith('.m3u8')) {
+    channel = channel.replace('.m3u8', '');
+  }
+
+  const filePath = path.join(process.cwd(), 'public', 'links.json');
+
+  let links;
+  try {
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    links = JSON.parse(fileContents);
+  } catch (err) {
+    return res.status(500).json({ error: 'links.json okunamadı', details: err.message });
+  }
+
+  const link = links[channel];
+
+  if (!link) {
+    return res.status(404).json({ error: 'Kanal bulunamadı' });
+  }
 
   try {
-    const filePath = path.join(process.cwd(), 'public', 'links.json');
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    const links = JSON.parse(fileContents);
-
-    const link = links[channel];
-    if (!link) {
-      return res.status(404).json({ error: 'Kanal bulunamadı' });
-    }
-
     const response = await fetch(link.url, {
       headers: {
         'Referer': link.ref,
@@ -22,15 +34,14 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      return res.status(502).json({ error: 'Yayın alınamadı', status: response.status });
+      throw new Error(`Hata: ${response.status}`);
     }
 
-    const contentType = response.headers.get('content-type');
-    res.setHeader('Content-Type', contentType || 'application/vnd.apple.mpegurl');
-
-    const stream = await response.text();
-    res.status(200).send(stream);
+    const contentType = response.headers.get('content-type') || 'application/vnd.apple.mpegurl';
+    res.setHeader('Content-Type', contentType);
+    const body = await response.text();
+    res.status(200).send(body);
   } catch (err) {
-    res.status(500).json({ error: 'Sunucu hatası', details: err.message });
+    res.status(500).json({ error: 'Proxy hatası', details: err.message });
   }
 }
