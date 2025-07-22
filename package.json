@@ -1,12 +1,18 @@
 {
   "name": "umittvspor",
   "version": "1.0.0",
-  "main": "api/[channel].js",
+  "main": "index.js",
   "scripts": {
-    "start": "node api/[channel].js"
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build"
   },
-  "license": "MIT",
+  "dependencies": {
+    "next": "^13.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
   "engines": {
-    "node": "18.x"
+    "node": ">=14"
   }
 }
