@@ -2,21 +2,24 @@ import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   try {
-    const apiResponse = await fetch("https://umittvspor.vercel.app/api/index");
-    const { channels } = await apiResponse.json();
+    const response = await fetch("https://umittvspor.vercel.app/channels");
+    const { channels } = await response.json();
 
-    let m3u = "#EXTM3U\n";
+    let m3uContent = "#EXTM3U\n";
     
-    channels.forEach(channel => {
-      m3u += `#EXTINF:-1 tvg-id="${channel.id}" tvg-name="${channel.name}",${channel.name}\n`;
-      m3u += `#EXTVLCOPT:http-user-agent=Mozilla/5.0\n`;
-      m3u += `#EXTVLCOPT:http-referrer=https://www.selcuksportshd1829.xyz/\n`;
-      m3u += `${channel.url}\n\n`;
-    });
+    for (const ch of channels) {
+      const channelRes = await fetch(`https://umittvspor.vercel.app/stream?id=${ch.id}`);
+      const channel = await channelRes.json();
+      
+      m3uContent += `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}",${ch.name}\n`;
+      m3uContent += `#EXTVLCOPT:http-user-agent=${channel.headers['User-Agent']}\n`;
+      m3uContent += `#EXTVLCOPT:http-referrer=${channel.headers['Referer']}\n`;
+      m3uContent += `${channel.url}\n\n`;
+    }
 
     res.setHeader('Content-Type', 'application/x-mpegURL');
-    res.setHeader('Cache-Control', 'public, max-age=1800');
-    return res.send(m3u);
+    res.setHeader('Cache-Control', 'public, max-age=600');
+    return res.send(m3uContent);
 
   } catch (error) {
     console.error("M3U Error:", error);
