@@ -2,12 +2,17 @@ export default async function handler(req, res) {
   const { channel } = req.query;
 
   try {
-    const baseUrl =
-      process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000"; // local test için
+    // Vercel URL'si otomatik alınır, localde fallback sağlanır
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/links.json`);
+    
+    if (!response.ok) {
+      throw new Error("links.json erişilemedi");
+    }
+
     const links = await response.json();
 
     const data = links[channel];
@@ -17,6 +22,7 @@ export default async function handler(req, res) {
 
     const stream = `${data.url}|referer=${data.ref}&|user-agent=${data.user_agent}`;
     return res.status(200).json({ stream });
+
   } catch (error) {
     return res.status(500).json({
       error: "Sunucu hatası",
