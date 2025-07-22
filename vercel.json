@@ -1,9 +1,3 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/[channel].js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/api/[channel].js" }
-  ]
+  "version": 2
 }
