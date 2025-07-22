@@ -1,38 +1,43 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-export default async function handler(req, res) {
-  const { channel } = req.query;
+export default function handler(req, res) {
+  let { channel } = req.query; // örn: "trt1.m3u8"
+
+  // ".m3u8" uzantısını temizle
+  channel = channel.replace('.m3u8', '');
+
+  const filePath = path.join(process.cwd(), 'public', 'links.json');
 
   try {
-    // public/links.json yolunu belirle
-    const jsonPath = path.resolve("./public/links.json");
-    const data = fs.readFileSync(jsonPath, "utf-8");
-    const links = JSON.parse(data);
+    const jsonData = fs.readFileSync(filePath, 'utf8');
+    const links = JSON.parse(jsonData);
 
     if (!links[channel]) {
-      return res.status(404).json({ error: "Kanal bulunamadı" });
+      res.status(404).json({ error: "Kanal bulunamadı" });
+      return;
     }
 
-    const ch = links[channel];
+    const { url, ref, user_agent } = links[channel];
 
-    // Yayın URL'sine header'larla fetch yap
-    const response = await fetch(ch.url, {
-      headers: {
-        Referer: ch.ref,
-        "User-Agent": ch.user_agent,
-      },
-    });
+    // IPTV uygulamaları genelde header info'yu URL içine | işaretleri ile ekler
+    const streamUrl = `${url}|referer=${ref}|user-agent=${user_agent}`;
 
-    if (!response.ok) {
-      return res.status(500).json({ error: "Yayın alınamadı", status: response.status });
-    }
+    // M3U8 dosyası gibi yanıt vereceğiz, içerik tipi değiştir
+    res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
 
-    const body = await response.text();
+    // Basitçe stream URL'yi içeren bir m3u8 dosyası oluşturabiliriz
+    // Örnek içerik:
+    // #EXTM3U
+    // #EXTINF:-1,${channel}
+    // ${streamUrl}
 
-    // M3U8 içeriğini döndür
-    res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
-    res.status(200).send(body);
+    const m3u8Content = `#EXTM3U
+#EXTINF:-1,${channel}
+${streamUrl}
+`;
+
+    res.status(200).send(m3u8Content);
 
   } catch (error) {
     res.status(500).json({ error: "Sunucu hatası", details: error.message });
