@@ -1,14 +1,14 @@
 {
   "name": "umittvspor",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Selcuksports link API for Vercel",
+  "main": "api/[channel].js",
   "scripts": {
-    "start": "node api/index.js"
+    "start": "node api/[channel].js"
   },
-  "dependencies": {
-    "node-fetch": "^3.3.1"
-  },
+  "dependencies": {},
   "engines": {
-    "node": "22.x"
-  }
+    "node": ">=14.x"
+  },
+  "license": "MIT"
 }
