@@ -1,26 +1,23 @@
-export default async function handler(req, res) {
+import fs from 'fs';
+import path from 'path';
+
+export default function handler(req, res) {
   const { channel } = req.query;
 
   try {
-    // Vercel URL'si otomatik alınır, localde fallback sağlanır
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-
-    const response = await fetch(`${baseUrl}/links.json`);
-    
-    if (!response.ok) {
-      throw new Error("links.json erişilemedi");
-    }
-
-    const links = await response.json();
+    // Public klasördeki links.json dosyasının tam yolu
+    const filePath = path.resolve('./public/links.json');
+    const fileContents = fs.readFileSync(filePath, 'utf-8');
+    const links = JSON.parse(fileContents);
 
     const data = links[channel];
     if (!data) {
       return res.status(404).json({ error: "Kanal bulunamadı" });
     }
 
+    // İstenen formatta stream linki oluşturuyoruz
     const stream = `${data.url}|referer=${data.ref}&|user-agent=${data.user_agent}`;
+
     return res.status(200).json({ stream });
 
   } catch (error) {
