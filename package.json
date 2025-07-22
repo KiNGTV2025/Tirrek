@@ -1,4 +1,13 @@
 {
   "name": "umittvspor",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
 }
