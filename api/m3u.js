@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
     const apiResponse = await fetch("https://umittvspor.vercel.app/api/index");
     const { channels } = await apiResponse.json();
@@ -22,4 +22,4 @@ module.exports = async (req, res) => {
     console.error("M3U Error:", error);
     return res.status(500).send("#EXTM3U\n# Error generating playlist");
   }
-};
+}
