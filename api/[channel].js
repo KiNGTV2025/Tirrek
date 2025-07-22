@@ -1,29 +1,24 @@
-import fs from 'fs';
 import path from 'path';
+import fs from 'fs/promises';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { channel } = req.query;
 
   try {
-    // Public klasördeki links.json dosyasının tam yolu
-    const filePath = path.resolve('./public/links.json');
-    const fileContents = fs.readFileSync(filePath, 'utf-8');
-    const links = JSON.parse(fileContents);
+    const filePath = path.join(process.cwd(), 'public', 'links.json');
+    const fileContents = await fs.readFile(filePath, 'utf8');
+    const data = JSON.parse(fileContents);
 
-    const data = links[channel];
-    if (!data) {
+    if (!data[channel]) {
       return res.status(404).json({ error: "Kanal bulunamadı" });
     }
 
-    // İstenen formatta stream linki oluşturuyoruz
-    const stream = `${data.url}|referer=${data.ref}&|user-agent=${data.user_agent}`;
-
-    return res.status(200).json({ stream });
-
-  } catch (error) {
-    return res.status(500).json({
-      error: "Sunucu hatası",
-      details: error.message,
+    const { url, ref, user_agent } = data[channel];
+    return res.status(200).json({
+      stream: `${url}|referer=${ref}|user-agent=${user_agent}`
     });
+
+  } catch (err) {
+    res.status(500).json({ error: "Sunucu hatası", details: err.message });
   }
 }
