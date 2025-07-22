@@ -21,7 +21,7 @@ class SelcuksportsManager:
             "tabiispor": "selcuktabiispor",
             "aspor": "selcukaspor"
         }
-        self.links_json_file = "api/links.json"
+        self.links_json_file = "public/links.json"
 
     def find_working_domain(self):
         for i in range(1825, 1850):
