@@ -9,6 +9,5 @@
     "start": "vercel dev"
   },
   "dependencies": {
-    // projenin ihtiyaç duyduğu paketler
   }
 }
