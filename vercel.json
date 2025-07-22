@@ -5,7 +5,8 @@
       "src": "api/*.js",
       "use": "@vercel/node",
       "config": {
-        "nodeVersion": "22.x"
+        "nodeVersion": "22.x",
+        "includeFiles": ["api/**"]
       }
     }
   ],
