@@ -1,67 +1,67 @@
 {
   "trt1": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports1/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "trt2": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports2/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "beinmax1": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsportsmax1/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "beinmax2": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsportsmax2/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "smartspor": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksmartspor/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "smartspor2": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksmartspor2/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "ssport": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukssport/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "ssport2": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukssport2/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "eurosport1": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukeurosport1/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "eurosport2": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukeurosport2/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "sf1": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksf1/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "tabiispor": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuktabiispor/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   },
   "aspor": {
     "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukaspor/playlist.m3u8",
-    "ref": "https://www.selcuksportshd1829.xyz/",
+    "ref": "https://www.selcuksportshd1830.xyz/",
     "user_agent": "Mozilla/5.0"
   }
 }
