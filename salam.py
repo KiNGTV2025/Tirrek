@@ -33,7 +33,7 @@ def get_dynamic_urls() -> Dict[str, str]:
         'base_url': base_url
     }
 
-def generate_links() -> list:
+def generate_links() -> dict:
     urls = get_dynamic_urls()
 
     channels = {
@@ -112,16 +112,19 @@ def generate_links() -> list:
         36: "yayinex8.m3u8"
     }
 
-    result = []
+    result = {}
+    index = 130  # Başlangıç ID
+
     for cid, cname in channels.items():
         if cid in stream_paths:
             full_url = f"{urls['base_url']}{stream_paths[cid]}|referer={urls['dynamic_domain']}"
-            result.append({
-                "title": cname,
+            result[str(index)] = {
+                "baslik": cname,
                 "url": full_url,
-                "image": f"https://example.com/logo/{cid}.png",
-                "category": "TRGOALS"
-            })
+                "logo": f"https://example.com/logo/{cid}.png",
+                "grup": "ÜmitVIP~Spor"
+            }
+            index += 1
 
     return result
 
@@ -129,4 +132,4 @@ if __name__ == "__main__":
     json_output = generate_links()
     with open("public/links2.json", "w", encoding="utf-8") as f:
         json.dump(json_output, f, indent=2, ensure_ascii=False)
-    print("✅ TRGOALS verisi Selcuksports formatında public/links2.json dosyasına yazıldı.")
+    print("✅ Yeni formatta JSON 'public/links2.json' dosyasına yazıldı.")
