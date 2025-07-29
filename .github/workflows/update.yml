@@ -1,4 +1,4 @@
-name: Güncelle Selcuksports
+name: Güncelle ÜmitVIP
 
 on:
   schedule:
@@ -34,3 +34,4 @@ jobs:
             git push
           else
             echo "⬇️ Değişiklik yok, commit atlanıyor."
+          fi
