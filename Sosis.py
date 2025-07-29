@@ -1,11 +1,11 @@
 from httpx import Client
 import re
-import os
 import json
 
 class SelcuksportsManager:
     def __init__(self):
         self.httpx = Client(timeout=10, verify=False)
+
         self.kanallar = {
             "trt1": "selcukbeinsports1",
             "trt2": "selcukbeinsports2",
@@ -21,7 +21,23 @@ class SelcuksportsManager:
             "tabiispor": "selcuktabiispor",
             "aspor": "selcukaspor"
         }
-        self.links_json_file = "public/links.json"
+
+        # Düzgün görünen kanal adları
+        self.kanal_adlari = {
+            "trt1": "TRT 1",
+            "trt2": "TRT 2",
+            "beinmax1": "Bein Sports Max 1",
+            "beinmax2": "Bein Sports Max 2",
+            "smartspor": "Smart Spor",
+            "smartspor2": "Smart Spor 2",
+            "ssport": "S Sport",
+            "ssport2": "S Sport 2",
+            "eurosport1": "Eurosport 1",
+            "eurosport2": "Eurosport 2",
+            "sf1": "S Sport F1",
+            "tabiispor": "Tabii Spor",
+            "aspor": "A Spor"
+        }
 
     def find_working_domain(self):
         for i in range(1825, 1850):
@@ -44,18 +60,16 @@ class SelcuksportsManager:
 
     def generate_links_json(self, base_url, referer_url):
         links = {}
-        for name, cid in self.kanallar.items():
+        for i, (name, cid) in enumerate(self.kanallar.items(), start=130):
             full_url = f"{base_url}{cid}/playlist.m3u8"
-            links[name] = {
+            guzel_isim = self.kanal_adlari.get(name, name.upper())
+            links[str(i)] = {
+                "baslik": f"{guzel_isim} [HD]",
                 "url": full_url,
-                "ref": referer_url,
-                "user_agent": "Mozilla/5.0"
+                "logo": f"https://example.com/logos/{name}.png",  # Burayı özelleştirebilirsin
+                "grup": "ÜmitVIP~Spor2"
             }
-
-        os.makedirs(os.path.dirname(self.links_json_file), exist_ok=True)
-
-        with open(self.links_json_file, "w", encoding="utf-8") as f:
-            json.dump(links, f, indent=2)
+        return links
 
     def calistir(self):
         html, referer = self.find_working_domain()
@@ -78,8 +92,9 @@ class SelcuksportsManager:
             print("❌ baseStreamUrl bulunamadı")
             return
 
-        self.generate_links_json(base_url, referer)
-        print("✅ JSON başarıyla güncellendi!")
+        links = self.generate_links_json(base_url, referer)
+        print(json.dumps(links, indent=2, ensure_ascii=False))
+
 
 if __name__ == "__main__":
     SelcuksportsManager().calistir()
