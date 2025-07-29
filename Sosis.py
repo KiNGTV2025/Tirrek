@@ -1,6 +1,7 @@
 from httpx import Client
 import re
 import json
+import os
 
 class SelcuksportsManager:
     def __init__(self):
@@ -22,7 +23,6 @@ class SelcuksportsManager:
             "aspor": "selcukaspor"
         }
 
-        # Düzgün görünen kanal adları
         self.kanal_adlari = {
             "trt1": "TRT 1",
             "trt2": "TRT 2",
@@ -66,7 +66,7 @@ class SelcuksportsManager:
             links[str(i)] = {
                 "baslik": f"{guzel_isim} [HD]",
                 "url": full_url,
-                "logo": f"https://example.com/logos/{name}.png",  # Burayı özelleştirebilirsin
+                "logo": f"https://example.com/logos/{name}.png",  # İstersen CDN logosuyla değiştir
                 "grup": "ÜmitVIP~Spor2"
             }
         return links
@@ -93,8 +93,13 @@ class SelcuksportsManager:
             return
 
         links = self.generate_links_json(base_url, referer)
-        print(json.dumps(links, indent=2, ensure_ascii=False))
 
+        # JSON dosyasına yaz
+        os.makedirs("public", exist_ok=True)
+        with open("public/links.json", "w", encoding="utf-8") as f:
+            json.dump(links, f, indent=2, ensure_ascii=False)
+
+        print("✅ links.json dosyası oluşturuldu ve güncellendi.")
 
 if __name__ == "__main__":
     SelcuksportsManager().calistir()
