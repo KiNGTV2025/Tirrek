@@ -1,212 +1,212 @@
-[
-  {
-    "title": "BEIN SPORTS 1 (ZIRVE)",
+{
+  "130": {
+    "baslik": "BEIN SPORTS 1 (ZIRVE)",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinzirve.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/1.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/1.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 1 (1)",
+  "131": {
+    "baslik": "BEIN SPORTS 1 (1)",
     "url": "https://r0.4928d54d950ee70q17.lat/yayin1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/2.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/2.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 1 (INAT)",
+  "132": {
+    "baslik": "BEIN SPORTS 1 (INAT)",
     "url": "https://r0.4928d54d950ee70q17.lat/yayininat.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/3.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/3.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 2",
+  "133": {
+    "baslik": "BEIN SPORTS 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinb2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/4.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/4.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 3",
+  "134": {
+    "baslik": "BEIN SPORTS 3",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinb3.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/5.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/5.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 4",
+  "135": {
+    "baslik": "BEIN SPORTS 4",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinb4.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/6.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/6.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS 5",
+  "136": {
+    "baslik": "BEIN SPORTS 5",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinb5.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/7.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/7.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS MAX 1",
+  "137": {
+    "baslik": "BEIN SPORTS MAX 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinbm1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/8.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/8.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "BEIN SPORTS MAX 2",
+  "138": {
+    "baslik": "BEIN SPORTS MAX 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinbm2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/9.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/9.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "S SPORT 1",
+  "139": {
+    "baslik": "S SPORT 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinss.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/10.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/10.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "S SPORT 2",
+  "140": {
+    "baslik": "S SPORT 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinss2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/11.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/11.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TIVIBU SPOR 1",
+  "141": {
+    "baslik": "TIVIBU SPOR 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayint1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/13.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/13.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TIVIBU SPOR 2",
+  "142": {
+    "baslik": "TIVIBU SPOR 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayint2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/14.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/14.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TIVIBU SPOR 3",
+  "143": {
+    "baslik": "TIVIBU SPOR 3",
     "url": "https://r0.4928d54d950ee70q17.lat/yayint3.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/15.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/15.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "SPOR SMART 1",
+  "144": {
+    "baslik": "SPOR SMART 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinsmarts.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/16.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/16.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "SPOR SMART 2",
+  "145": {
+    "baslik": "SPOR SMART 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinsms2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/17.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/17.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TRT SPOR 1",
+  "146": {
+    "baslik": "TRT SPOR 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayintrtspor.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/18.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/18.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TRT SPOR 2",
+  "147": {
+    "baslik": "TRT SPOR 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayintrtspor2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/19.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/19.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TRT 1",
+  "148": {
+    "baslik": "TRT 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayintrt1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/20.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/20.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "A SPOR",
+  "149": {
+    "baslik": "A SPOR",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinas.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/21.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/21.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "ATV",
+  "150": {
+    "baslik": "ATV",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinatv.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/22.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/22.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TV 8",
+  "151": {
+    "baslik": "TV 8",
     "url": "https://r0.4928d54d950ee70q17.lat/yayintv8.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/23.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/23.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "TV 8.5",
+  "152": {
+    "baslik": "TV 8.5",
     "url": "https://r0.4928d54d950ee70q17.lat/yayintv85.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/24.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/24.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "FORMULA 1",
+  "153": {
+    "baslik": "FORMULA 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinf1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/25.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/25.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "NBA TV",
+  "154": {
+    "baslik": "NBA TV",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinnbatv.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/26.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/26.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EURO SPORT 1",
+  "155": {
+    "baslik": "EURO SPORT 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayineu1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/27.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/27.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EURO SPORT 2",
+  "156": {
+    "baslik": "EURO SPORT 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayineu2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/28.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/28.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "S SPORT PLUS 2",
+  "157": {
+    "baslik": "S SPORT PLUS 2",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex1.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/29.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/29.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "S SPORT PLUS 1",
+  "158": {
+    "baslik": "S SPORT PLUS 1",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex2.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/30.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/30.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 3",
+  "159": {
+    "baslik": "EXXEN SPOR 3",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex3.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/31.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/31.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 4",
+  "160": {
+    "baslik": "EXXEN SPOR 4",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex4.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/32.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/32.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 5",
+  "161": {
+    "baslik": "EXXEN SPOR 5",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex5.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/33.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/33.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 6",
+  "162": {
+    "baslik": "EXXEN SPOR 6",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex6.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/34.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/34.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 7",
+  "163": {
+    "baslik": "EXXEN SPOR 7",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex7.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/35.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/35.png",
+    "grup": "ÜmitVIP~Spor"
   },
-  {
-    "title": "EXXEN SPOR 8",
+  "164": {
+    "baslik": "EXXEN SPOR 8",
     "url": "https://r0.4928d54d950ee70q17.lat/yayinex8.m3u8|referer=https://trgoals1353.xyz/",
-    "image": "https://example.com/logo/36.png",
-    "category": "TRGOALS"
+    "logo": "https://example.com/logo/36.png",
+    "grup": "ÜmitVIP~Spor"
   }
-]
+}
