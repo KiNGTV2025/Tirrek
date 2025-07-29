@@ -1,0 +1,37 @@
+name: Güncelle ÜmitVIP
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # Her 10 dakikada bir çalışır
+  workflow_dispatch:        # Elle tetikleme desteği
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repo'yu klonla
+        uses: actions/checkout@v3
+
+      - name: Python kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Kütüphaneleri yükle
+        run: pip install httpx
+
+      - name: Python scriptini çalıştır
+        run: python salam.py
+
+      - name: Değişiklikleri commit et
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add public/links.json
+          if ! git diff --cached --quiet; then
+            git commit -m "🔁 Otomatik güncelleme"
+            git push
+          else
+            echo "⬇️ Değişiklik yok, commit atlanıyor."
+          fi
