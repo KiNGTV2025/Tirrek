@@ -1,1 +1,80 @@
-
+{
+  "130": {
+    "baslik": "TRT 1 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports1/playlist.m3u8",
+    "logo": "https://example.com/logos/trt1.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "131": {
+    "baslik": "TRT 2 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsports2/playlist.m3u8",
+    "logo": "https://example.com/logos/trt2.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "132": {
+    "baslik": "Bein Sports Max 1 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsportsmax1/playlist.m3u8",
+    "logo": "https://example.com/logos/beinmax1.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "133": {
+    "baslik": "Bein Sports Max 2 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukbeinsportsmax2/playlist.m3u8",
+    "logo": "https://example.com/logos/beinmax2.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "134": {
+    "baslik": "Smart Spor [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksmartspor/playlist.m3u8",
+    "logo": "https://example.com/logos/smartspor.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "135": {
+    "baslik": "Smart Spor 2 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksmartspor2/playlist.m3u8",
+    "logo": "https://example.com/logos/smartspor2.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "136": {
+    "baslik": "S Sport [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukssport/playlist.m3u8",
+    "logo": "https://example.com/logos/ssport.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "137": {
+    "baslik": "S Sport 2 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukssport2/playlist.m3u8",
+    "logo": "https://example.com/logos/ssport2.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "138": {
+    "baslik": "Eurosport 1 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukeurosport1/playlist.m3u8",
+    "logo": "https://example.com/logos/eurosport1.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "139": {
+    "baslik": "Eurosport 2 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukeurosport2/playlist.m3u8",
+    "logo": "https://example.com/logos/eurosport2.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "140": {
+    "baslik": "S Sport F1 [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuksf1/playlist.m3u8",
+    "logo": "https://example.com/logos/sf1.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "141": {
+    "baslik": "Tabii Spor [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcuktabiispor/playlist.m3u8",
+    "logo": "https://example.com/logos/tabiispor.png",
+    "grup": "ÜmitVIP~Spor2"
+  },
+  "142": {
+    "baslik": "A Spor [HD]",
+    "url": "https://alpha.cf-worker-9c77973d29ec8a.workers.dev/live/selcukaspor/playlist.m3u8",
+    "logo": "https://example.com/logos/aspor.png",
+    "grup": "ÜmitVIP~Spor2"
+  }
+}
