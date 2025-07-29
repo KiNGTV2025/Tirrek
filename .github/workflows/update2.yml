@@ -18,8 +18,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Kütüphaneleri yükle
-        run: pip install httpx
+      - name: Gerekli kütüphaneleri yükle
+        run: pip install requests httpx
 
       - name: Python scriptini çalıştır
         run: python salam.py
@@ -28,7 +28,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add public/links.json
+          git add public/links2.json
           if ! git diff --cached --quiet; then
             git commit -m "🔁 Otomatik güncelleme"
             git push
