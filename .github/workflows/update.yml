@@ -22,7 +22,7 @@ jobs:
         run: pip install httpx
 
       - name: Python scriptini çalıştır
-        run: python Sosis.py
+        run: python sosis.py
 
       - name: Değişiklikleri commit et
         run: |
