@@ -4,19 +4,27 @@ from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import urllib.parse
 import re
+import pytz
+
+# Türkiye saat dilimi
+TURKEY_TZ = pytz.timezone("Europe/Istanbul")
 
 def format_start_time(base_date_str, time_str):
+    """Verilen tarih ve saat string'ini datetime objesine çevir (Türkiye saati)."""
     base_date = datetime.strptime(base_date_str, "%m/%d/%Y %H:%M:%S")
     hour, minute = map(int, time_str.split(":"))
     base_date = base_date.replace(hour=hour, minute=minute, second=0)
-    return base_date
+    return TURKEY_TZ.localize(base_date)
 
 def make_tvg_id(name):
-    # Kanal adından özel karakterleri kaldırıp küçük harf yap
+    """Kanal adından tvg-id oluştur."""
     return re.sub(r'[^a-zA-Z0-9]', '', name).lower()
 
-base_date_str = datetime.now().strftime("%m/%d/%Y") + " 00:00:00"
+# Bugünün tarihi (Türkiye saati)
+today_tr = datetime.now(TURKEY_TZ)
+base_date_str = today_tr.strftime("%m/%d/%Y") + " 00:00:00"
 encoded_date = urllib.parse.quote(base_date_str)
+
 url = f"https://www.digiturk.com.tr/Ajax/GetTvGuideFromDigiturk?Day={encoded_date}"
 
 headers = {
@@ -26,7 +34,7 @@ headers = {
     "x-requested-with": "XMLHttpRequest"
 }
 
-response = requests.get(url, headers=headers)
+response = requests.get(url, headers=headers, timeout=20)
 response.raise_for_status()
 
 soup = BeautifulSoup(response.text, "html.parser")
@@ -38,8 +46,8 @@ program_counter = 1
 for channel in channels:
     h3 = channel.select_one("h3.tvguide-channel-name")
     channel_name = h3.get_text(strip=True) if h3 else "Bilinmeyen Kanal"
-    tvg_id = make_tvg_id(channel_name)  # tvg-id üret
-       
+    tvg_id = make_tvg_id(channel_name)
+
     # Kanal etiketi
     channel_elem = ET.SubElement(tv, "channel", id=tvg_id)
     ET.SubElement(channel_elem, "display-name").text = channel_name
@@ -62,7 +70,7 @@ for channel in channels:
         duration_minutes = int("".join(filter(str.isdigit, duration_str))) or 30
         stop_dt = start_dt + timedelta(minutes=duration_minutes)
 
-        # Programme etiketi — channel ve tvg-id aynı
+        # Programme etiketi (channel ve tvg-id aynı)
         programme = ET.SubElement(tv, "programme", {
             "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
             "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
@@ -76,4 +84,4 @@ for channel in channels:
 tree = ET.ElementTree(tv)
 tree.write("epg.xml", encoding="utf-8", xml_declaration=True)
 
-print("epg.xml başarıyla oluşturuldu.")
+print("epg.xml başarıyla oluşturuldu (Türkiye saati, canlıya yakın veri).")
