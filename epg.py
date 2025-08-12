@@ -3,12 +3,17 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import urllib.parse
+import re
 
 def format_start_time(base_date_str, time_str):
     base_date = datetime.strptime(base_date_str, "%m/%d/%Y %H:%M:%S")
     hour, minute = map(int, time_str.split(":"))
     base_date = base_date.replace(hour=hour, minute=minute, second=0)
     return base_date
+
+def make_tvg_id(name):
+    # Kanal adını tvg-id uyumlu yap
+    return re.sub(r'[^a-zA-Z0-9]', '', name).lower()
 
 base_date_str = datetime.now().strftime("%m/%d/%Y") + " 00:00:00"
 encoded_date = urllib.parse.quote(base_date_str)
@@ -35,10 +40,13 @@ for channel in channels:
     h3 = channel.select_one("h3.tvguide-channel-name")
     channel_name = h3.get_text(strip=True) if h3 else "Bilinmeyen Kanal"
     channel_id = str(channel_counter)
+    tvg_id = make_tvg_id(channel_name)
     channel_counter += 1
 
+    # Kanal bilgisi
     channel_elem = ET.SubElement(tv, "channel", id=channel_id)
     ET.SubElement(channel_elem, "display-name").text = channel_name
+    ET.SubElement(channel_elem, "tvg-id").text = tvg_id
 
     programs = channel.select("div.tvGuideResult-box-wholeDates.channelDetail")
     for prog in programs:
@@ -57,11 +65,12 @@ for channel in channels:
         duration_minutes = int("".join(filter(str.isdigit, duration_str))) or 30
         stop_dt = start_dt + timedelta(minutes=duration_minutes)
 
+        # Programme etiketi tvg-id ile
         programme = ET.SubElement(tv, "programme", {
             "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
             "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
             "channel": channel_id,
-            "id": f"program{program_counter}"
+            "tvg-id": tvg_id
         })
         program_counter += 1
 
