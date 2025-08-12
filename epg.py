@@ -43,6 +43,9 @@ channels = soup.select("div.swiper-slide.channelContent")
 tv = ET.Element("tv")
 program_counter = 1
 
+# Kanal listesi tutmak için
+kanal_listesi = []
+
 for channel in channels:
     h3 = channel.select_one("h3.tvguide-channel-name")
     channel_name = h3.get_text(strip=True) if h3 else "Bilinmeyen Kanal"
@@ -52,6 +55,9 @@ for channel in channels:
     channel_elem = ET.SubElement(tv, "channel", id=tvg_id)
     ET.SubElement(channel_elem, "display-name").text = channel_name
     ET.SubElement(channel_elem, "tvg-id").text = tvg_id
+
+    # Kanal.txt listesine ekle
+    kanal_listesi.append(f"{channel_name} => {tvg_id}")
 
     programs = channel.select("div.tvGuideResult-box-wholeDates.channelDetail")
     for prog in programs:
@@ -81,7 +87,12 @@ for channel in channels:
 
         ET.SubElement(programme, "title").text = title
 
+# EPG XML kaydet
 tree = ET.ElementTree(tv)
 tree.write("epg.xml", encoding="utf-8", xml_declaration=True)
 
-print("epg.xml başarıyla oluşturuldu (Türkiye saati, canlıya yakın veri).")
+# Kanal listesi kaydet
+with open("kanallar.txt", "w", encoding="utf-8") as f:
+    f.write("\n".join(kanal_listesi))
+
+print("✅ epg.xml ve kanallar.txt başarıyla oluşturuldu.")
