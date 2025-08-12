@@ -12,7 +12,7 @@ def format_start_time(base_date_str, time_str):
     return base_date
 
 def make_tvg_id(name):
-    # Kanal adını tvg-id uyumlu yap
+    # Kanal adından özel karakterleri kaldırıp küçük harf yap
     return re.sub(r'[^a-zA-Z0-9]', '', name).lower()
 
 base_date_str = datetime.now().strftime("%m/%d/%Y") + " 00:00:00"
@@ -33,18 +33,15 @@ soup = BeautifulSoup(response.text, "html.parser")
 channels = soup.select("div.swiper-slide.channelContent")
 
 tv = ET.Element("tv")
-channel_counter = 1
 program_counter = 1
 
 for channel in channels:
     h3 = channel.select_one("h3.tvguide-channel-name")
     channel_name = h3.get_text(strip=True) if h3 else "Bilinmeyen Kanal"
-    channel_id = str(channel_counter)
-    tvg_id = make_tvg_id(channel_name)
-    channel_counter += 1
-
-    # Kanal bilgisi
-    channel_elem = ET.SubElement(tv, "channel", id=channel_id)
+    tvg_id = make_tvg_id(channel_name)  # tvg-id üret
+       
+    # Kanal etiketi
+    channel_elem = ET.SubElement(tv, "channel", id=tvg_id)
     ET.SubElement(channel_elem, "display-name").text = channel_name
     ET.SubElement(channel_elem, "tvg-id").text = tvg_id
 
@@ -65,11 +62,11 @@ for channel in channels:
         duration_minutes = int("".join(filter(str.isdigit, duration_str))) or 30
         stop_dt = start_dt + timedelta(minutes=duration_minutes)
 
-        # Programme etiketi tvg-id ile
+        # Programme etiketi — channel ve tvg-id aynı
         programme = ET.SubElement(tv, "programme", {
             "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
             "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
-            "channel": channel_id,
+            "channel": tvg_id,
             "tvg-id": tvg_id
         })
         program_counter += 1
