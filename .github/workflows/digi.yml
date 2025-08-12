@@ -1,9 +1,9 @@
-name: Generate EPG Hourly
+name: Generate EPG and Channel List Hourly
 
 on:
   schedule:
-    - cron: "0 * * * *"  # Her saat başında çalışır (UTC)
-  workflow_dispatch:      # Manuel çalıştırma
+    - cron: "0 * * * *"  # Her saat başında (UTC)
+  workflow_dispatch:      # Manuel tetikleme
 
 jobs:
   build:
@@ -23,13 +23,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 pytz
 
-      - name: Run EPG script
+      - name: Run EPG generator
         run: python epg.py
 
-      - name: Commit and push EPG file
+      - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add epg.xml
-          git commit -m "Güncel EPG (saatlik güncelleme)" || echo "No changes to commit"
+          git add epg.xml kanallar.txt
+          git commit -m "Saatlik güncel EPG ve kanal listesi" || echo "No changes to commit"
           git push
