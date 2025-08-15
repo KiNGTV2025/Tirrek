@@ -1,50 +1,57 @@
-import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import urllib.parse
 import unicodedata
 import re
+import time
+import random
+from tqdm import tqdm  # İlerleme çubuğu
 
 def normalize_tvg_id(name):
-    """Kanal adından tvg-id oluşturur"""
     name = name.lower()
     name = unicodedata.normalize("NFD", name)
     name = name.encode("ascii", "ignore").decode("utf-8")
-    name = re.sub(r"[^a-z0-9]+", "", name)  # harf ve rakam dışında sil
+    name = re.sub(r"[^a-z0-9]+", "", name)
     return name
 
 def format_start_time(base_date_str, time_str):
-    """Tarihi ve saati birleştirir"""
     base_date = datetime.strptime(base_date_str, "%m/%d/%Y %H:%M:%S")
     hour, minute = map(int, time_str.split(":"))
     base_date = base_date.replace(hour=hour, minute=minute, second=0)
     return base_date
 
-KANALLAR_DOSYA = "kanallar.txt"
-KAYMA_DOSYA = "kayma_uyarilari.txt"
+def fetch_with_retry(scraper, url, headers, max_retries=5):
+    delay = 2
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = scraper.get(url, headers=headers, timeout=15)
+            response.raise_for_status()
+            return response
+        except Exception as e:
+            if attempt == max_retries:
+                raise
+            time.sleep(delay)
+            delay *= 2
+    return None
 
-kanallar_dict = {}
-kayma_uyarilari = []
-
-tv = ET.Element("tv")
-today = datetime.now()
-
-for gun in range(0, 7):  # 7 günlük çekim
-    tarih = today + timedelta(days=gun)
+def process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv):
     base_date_str = tarih.strftime("%m/%d/%Y") + " 00:00:00"
-    encoded_date = urllib.parse.quote(base_date_str)
-
+    encoded_date = urllib.parse.quote(base_date_str, safe='')
     url = f"https://www.digiturk.com.tr/Ajax/GetTvGuideFromDigiturk?Day={encoded_date}"
     headers = {
         "accept": "*/*",
         "referer": "https://www.digiturk.com.tr/yayin-akisi",
-        "user-agent": "Mozilla/5.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
         "x-requested-with": "XMLHttpRequest"
     }
 
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
+    try:
+        response = fetch_with_retry(scraper, url, headers)
+    except Exception:
+        return False
+
     soup = BeautifulSoup(response.text, "html.parser")
     channels = soup.select("div.swiper-slide.channelContent")
 
@@ -76,11 +83,12 @@ for gun in range(0, 7):  # 7 günlük çekim
             duration_minutes = int("".join(filter(str.isdigit, duration_str))) or 30
             stop_dt = start_dt + timedelta(minutes=duration_minutes)
 
-            # Kayma kontrolü (sadece bugünkü programlarda)
             if gun == 0:
                 fark = abs((start_dt - datetime.now()).total_seconds()) / 60
-                if fark > 180:  # 3 saatten fazla fark varsa
-                    kayma_uyarilari.append(f"{channel_name} - '{title}' saati uyumsuz! EPG: {start_dt}, Şimdi: {datetime.now()}")
+                if fark > 180:
+                    kayma_uyarilari.append(
+                        f"{channel_name} - '{title}' saati uyumsuz! EPG: {start_dt}, Şimdi: {datetime.now()}"
+                    )
 
             programme = ET.SubElement(tv, "programme", {
                 "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
@@ -90,18 +98,44 @@ for gun in range(0, 7):  # 7 günlük çekim
             })
             ET.SubElement(programme, "title").text = title
 
-# EPG XML kaydet
+    # Rastgele bekleme
+    time.sleep(random.uniform(1, 3))
+    return True
+
+KANALLAR_DOSYA = "kanallar.txt"
+KAYMA_DOSYA = "kayma_uyarilari.txt"
+kanallar_dict = {}
+kayma_uyarilari = []
+basarisiz_gunler = []
+tv = ET.Element("tv")
+today = datetime.now()
+scraper = cloudscraper.create_scraper()
+
+# İlk tur (tqdm ile)
+for gun in tqdm(range(0, 7), desc="EPG Verisi Çekiliyor", unit="gün"):
+    tarih = today + timedelta(days=gun)
+    success = process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv)
+    if not success:
+        basarisiz_gunler.append((tarih, gun))
+
+# İkinci tur
+if basarisiz_gunler:
+    for tarih, gun in tqdm(basarisiz_gunler, desc="Başarısız Günler Tekrar Deneniyor", unit="gün"):
+        success = process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv)
+        if not success:
+            basarisiz_gunler.append(tarih.strftime("%Y-%m-%d"))
+
+# Kaydetme işlemleri
 tree = ET.ElementTree(tv)
 tree.write("epg.xml", encoding="utf-8", xml_declaration=True)
-
-# Kanal listesi kaydet
 with open(KANALLAR_DOSYA, "w", encoding="utf-8") as f:
     for ad, tid in sorted(kanallar_dict.items()):
         f.write(f"{ad} => {tid}\n")
-
-# Kayma uyarıları kaydet
-if kayma_uyarilari:
+if kayma_uyarilari or basarisiz_gunler:
     with open(KAYMA_DOSYA, "w", encoding="utf-8") as f:
-        f.write("\n".join(kayma_uyarilari))
+        if kayma_uyarilari:
+            f.write("Kayma Uyarıları:\n" + "\n".join(kayma_uyarilari) + "\n\n")
+        if basarisiz_gunler:
+            f.write("Verisi Alınamayan Günler:\n" + "\n".join(basarisiz_gunler))
 
-print("epg.xml, kanallar.txt ve kayma_uyarilari.txt oluşturuldu.")
+print("\n✅ epg.xml, kanallar.txt ve kayma_uyarilari.txt oluşturuldu.")
