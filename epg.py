@@ -29,7 +29,7 @@ def fetch_with_retry(scraper, url, headers, max_retries=5):
             response = scraper.get(url, headers=headers, timeout=15)
             response.raise_for_status()
             return response
-        except Exception as e:
+        except Exception:
             if attempt == max_retries:
                 raise
             time.sleep(delay)
@@ -98,7 +98,6 @@ def process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv):
             })
             ET.SubElement(programme, "title").text = title
 
-    # Rastgele bekleme
     time.sleep(random.uniform(1, 3))
     return True
 
@@ -111,7 +110,7 @@ tv = ET.Element("tv")
 today = datetime.now()
 scraper = cloudscraper.create_scraper()
 
-# İlk tur (tqdm ile)
+# İlk tur
 for gun in tqdm(range(0, 7), desc="EPG Verisi Çekiliyor", unit="gün"):
     tarih = today + timedelta(days=gun)
     success = process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv)
@@ -120,10 +119,12 @@ for gun in tqdm(range(0, 7), desc="EPG Verisi Çekiliyor", unit="gün"):
 
 # İkinci tur
 if basarisiz_gunler:
+    yeniden_basarisizlar = []
     for tarih, gun in tqdm(basarisiz_gunler, desc="Başarısız Günler Tekrar Deneniyor", unit="gün"):
         success = process_day(scraper, tarih, gun, kanallar_dict, kayma_uyarilari, tv)
         if not success:
-            basarisiz_gunler.append(tarih.strftime("%Y-%m-%d"))
+            yeniden_basarisizlar.append((tarih, gun))
+    basarisiz_gunler = yeniden_basarisizlar
 
 # Kaydetme işlemleri
 tree = ET.ElementTree(tv)
@@ -136,6 +137,6 @@ if kayma_uyarilari or basarisiz_gunler:
         if kayma_uyarilari:
             f.write("Kayma Uyarıları:\n" + "\n".join(kayma_uyarilari) + "\n\n")
         if basarisiz_gunler:
-            f.write("Verisi Alınamayan Günler:\n" + "\n".join(basarisiz_gunler))
+            f.write("Verisi Alınamayan Günler:\n" + "\n".join([t.strftime("%Y-%m-%d") for t, _ in basarisiz_gunler]))
 
 print("\n✅ epg.xml, kanallar.txt ve kayma_uyarilari.txt oluşturuldu.")
